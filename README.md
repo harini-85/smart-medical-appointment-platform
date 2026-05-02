@@ -32,35 +32,39 @@ An AI-powered full-stack healthcare platform that routes patients to the correct
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                     Frontend (Next.js)                  │
-│  ┌──────────────┐  ┌──────────────┐  ┌───────────────┐  │
-│  │  Landing Page│  │Patient Portal│  │ Admin Dashboard│  │
-│  └──────────────┘  └──────────────┘  └───────────────┘  │
-└────────────────────────┬────────────────────────────────┘
-                         │ REST API (JWT Auth)
-┌────────────────────────▼────────────────────────────────┐
-│                   Backend (FastAPI)                      │
-│                                                          │
-│  /predict          → ML model inference                  │
-│  /predict/emergency-refine → Emergency sub-type routing  │
-│  /doctors/nearby   → Haversine geolocation filter        │
-│  /appointments     → Booking & status management         │
-│  /admin/*          → Doctor & availability management    │
-│  /patient/profile  → Patient health profile              │
-│  Scheduler         → Nightly retrain trigger (runs only if ≥ 20 new feedbacks)    │
-└──────────┬──────────────────────┬───────────────────────┘
-           │                      │
-┌──────────▼──────┐    ┌──────────▼──────────────────────┐
-│   PostgreSQL DB  │    │        ML Model                  │
-│                  │    │  TF-IDF (char n-gram 3-5)        │
-│  users           │    │  + Logistic Regression           │
-│  doctors         │    │  Trained on symptom-department   │
-│  appointments    │    │  dataset + admin feedback        │
-│  doctor_avail.   │    │  Saved as .pkl, hot-reloaded     │
-│  patient_profiles│    │  after nightly retrain           │
-│  retrain_log     │    └─────────────────────────────────┘
-└──────────────────┘
+┌──────────────────────────────────────────────────────────────┐
+│                    Frontend (Next.js)                        │
+│  ┌──────────────┐  ┌──────────────┐  ┌────────────────────┐  │
+│  │ Landing Page │  │ Patient Portal│ │ Admin Dashboard    │  │
+│  └──────────────┘  └──────────────┘  └────────────────────┘  │
+└───────────────────────────┬──────────────────────────────────┘
+                            │
+                            │ REST API (JWT Authentication)
+                            ▼
+┌──────────────────────────────────────────────────────────────┐
+│                    Backend (FastAPI)                         │
+│                                                              │
+│  /predict                    → ML model inference             │
+│  /predict/emergency-refine  → Emergency classification        │
+│  /doctors/nearby            → Location-based filtering        │
+│  /appointments              → Booking & status tracking       │
+│  /admin/*                   → Doctor & availability mgmt      │
+│  /patient/profile           → Patient data handling           │
+│                                                              │
+│  Scheduler → Nightly model retraining                         │
+└───────────────────┬───────────────────────┬──────────────────┘
+                    │                       │
+                    ▼                       ▼
+┌──────────────────────────────┐   ┌──────────────────────────────┐
+│     PostgreSQL Database       │   │          ML Model            │
+│                              │   │                              │
+│  • users                     │   │  • TF-IDF (char n-grams 3–5) │
+│  • doctors                   │   │  • Logistic Regression        │
+│  • appointments              │   │  • Trained on symptom data    │
+│  • doctor_availability       │   │  • Saved as .pkl              │
+│  • patient_profiles          │   │  • Updated after retraining   │
+│  • retrain_logs              │   └──────────────────────────────┘
+└──────────────────────────────┘
 ```
 
 ---
