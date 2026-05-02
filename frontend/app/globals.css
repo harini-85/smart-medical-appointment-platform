@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+:root {
+  --font-geist: "Geist", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: var(--font-geist), Arial, sans-serif;
+}
+
+/* smooth focus rings */
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
