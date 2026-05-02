@@ -44,27 +44,27 @@ An AI-powered full-stack healthcare platform that routes patients to the correct
 ┌──────────────────────────────────────────────────────────────┐
 │                    Backend (FastAPI)                         │
 │                                                              │
-│  /predict                    → ML model inference             │
-│  /predict/emergency-refine  → Emergency classification        │
-│  /doctors/nearby            → Location-based filtering        │
-│  /appointments              → Booking & status tracking       │
-│  /admin/*                   → Doctor & availability mgmt      │
-│  /patient/profile           → Patient data handling           │
+│  /predict                    → ML model inference            │
+│  /predict/emergency-refine  → Emergency classification       │
+│  /doctors/nearby            → Location-based filtering       │
+│  /appointments              → Booking & status tracking      │
+│  /admin/*                   → Doctor & availability mgmt     │
+│  /patient/profile           → Patient data handling          │
 │                                                              │
-│  Scheduler → Nightly model retraining                         │
+│  Scheduler → Nightly model retraining                        │
 └───────────────────┬───────────────────────┬──────────────────┘
                     │                       │
                     ▼                       ▼
 ┌──────────────────────────────┐   ┌──────────────────────────────┐
-│     PostgreSQL Database       │   │          ML Model            │
+│     PostgreSQL Database      │   │          ML Model            │
 │                              │   │                              │
 │  • users                     │   │  • TF-IDF (char n-grams 3–5) │
-│  • doctors                   │   │  • Logistic Regression        │
-│  • appointments              │   │  • Trained on symptom data    │
-│  • doctor_availability       │   │  • Saved as .pkl              │
-│  • patient_profiles          │   │  • Updated after retraining   │
-│  • retrain_logs              │   └──────────────────────────────┘
-└──────────────────────────────┘
+│  • doctors                   │   │  • Logistic Regression       │
+│  • appointments              │   │  • Trained on symptom data   │
+│  • doctor_availability       │   │  • Saved as .pkl             │
+│  • patient_profiles          │   │  • Updated after retraining  │
+│  • retrain_logs              │   |                              |
+└──────────────────────────────┘   └──────────────────────────────┘
 ```
 
 ---
