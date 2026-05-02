@@ -1,6 +1,6 @@
 # Smart Medical Appointment Platform
 
-An AI-powered full-stack healthcare platform that routes patients to the correct medical department based on symptom description, enables nearby doctor discovery, and supports real-time appointment booking — with a self-improving ML model that retrains nightly using admin feedback.
+An AI-powered full-stack healthcare platform that routes patients to the correct medical department based on symptom description, enables nearby doctor discovery, and supports real-time appointment booking with a self-improving ML model that retrains nightly using admin feedback.
 
 ---
 
