@@ -67,14 +67,14 @@ An AI-powered full-stack healthcare platform that routes patients to the correct
 
 ## Tech Stack
 
-| Layer     | Technology                              |
-|-----------|-----------------------------------------|
-| Frontend  | Next.js 14, TypeScript, Tailwind CSS    |
-| Backend   | FastAPI, Python                         |
-| Database  | PostgreSQL (SQLAlchemy raw SQL)         |
+| Layer     | Technology                                |
+|-----------|-------------------------------------------|
+| Frontend  | Next.js 14, TypeScript, Tailwind CSS      |
+| Backend   | FastAPI, Python                           |
+| Database  | PostgreSQL                                |    
 | ML        | scikit-learn, TF-IDF, Logistic Regression |
-| Auth      | JWT (python-jose), bcrypt               |
-| Scheduler | APScheduler (nightly cron)              |
+| Auth      | JWT , bcrypt                              |
+| Scheduler | APScheduler                               |
 
 ---
 
