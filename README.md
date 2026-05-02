@@ -24,7 +24,7 @@ An AI-powered full-stack healthcare platform that routes patients to the correct
 **ML Pipeline**
 - TF-IDF character n-gram vectorizer (3–5 grams) + Logistic Regression
 - Nightly scheduled retraining via APScheduler using admin-corrected feedback
-- Feedback threshold guard — only retrains when enough new corrections exist
+- Feedback threshold guard — only retrains when ≥ 20 new corrections exist since last successful run
 - Retrain logs stored in database with status, sample count, and timestamp
 
 ---
@@ -48,7 +48,7 @@ An AI-powered full-stack healthcare platform that routes patients to the correct
 │  /appointments     → Booking & status management         │
 │  /admin/*          → Doctor & availability management    │
 │  /patient/profile  → Patient health profile              │
-│  Scheduler         → Nightly model retraining (00:00)    │
+│  Scheduler         → Nightly retrain trigger (runs only if ≥ 20 new feedbacks)    │
 └──────────┬──────────────────────┬───────────────────────┘
            │                      │
 ┌──────────▼──────┐    ┌──────────▼──────────────────────┐
@@ -171,7 +171,7 @@ SECRET_KEY=your_jwt_secret_key
   - `≥ 0.70` → Final prediction
   - `0.45 – 0.70` → Needs clarification
   - `< 0.45` → Uncertain
-- **Retraining:** Nightly at 00:00 if ≥ 10 new admin-corrected feedback entries exist since last successful run
+- **Retraining:** Triggered nightly at 00:00, but only executes if ≥ 20 new admin-corrected feedback entries exist since the last successful run
 
 ---
 
