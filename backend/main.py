@@ -2,7 +2,11 @@ from fastapi import FastAPI, Query
 import numpy as np
 import math
 import logging
+import os
 from datetime import datetime
+from dotenv import load_dotenv
+
+load_dotenv()
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -31,12 +35,14 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI(title="Appointment Reason Classifier API")
 
+FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=[FRONTEND_URL],
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "PATCH"],
+    allow_headers=["Authorization", "Content-Type"],
 )
 
 app.include_router(auth_router)
@@ -79,7 +85,8 @@ def _do_retrain():
                 feedback_records.append({"text": row.input_text.strip(), "department": label})
 
         try:
-            original_df = pd.read_csv("appointment_dataset.csv").drop_duplicates(subset=["text"]).dropna()
+            dataset_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "appointment_dataset.csv")
+            original_df = pd.read_csv(dataset_path).drop_duplicates(subset=["text"]).dropna()
         except Exception as e:
             _log_retrain(db, "failed", 0, 0, f"Could not load dataset: {e}")
             return
@@ -101,7 +108,8 @@ def _do_retrain():
             ("clf", LogisticRegression(max_iter=1000, solver="lbfgs", C=2.0))
         ])
         pipeline.fit(combined_df["text"], combined_df["department"])
-        joblib.dump(pipeline, "models/appointment_model_v1.pkl")
+        model_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "models", "appointment_model_v1.pkl")
+        joblib.dump(pipeline, model_path)
         model = pipeline
 
         _log_retrain(db, "success", len(combined_df), len(feedback_df), "Retrained successfully")
@@ -177,6 +185,11 @@ def shutdown():
 @app.get("/")
 def root():
     return {"message": "API is running successfully"}
+
+
+@app.get("/health")
+def health():
+    return {"status": "ok"}
 
 
 @app.post("/predict")

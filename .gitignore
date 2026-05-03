@@ -1,0 +1,24 @@
+# Environment
+.env
+.env.local
+*.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+
+# Model (large binary — commit only if needed, or use Render disk)
+# models/*.pkl
+
+# Node
+node_modules/
+frontend/.next/
+frontend/out/
+
+# Misc
+.DS_Store
+*.log
