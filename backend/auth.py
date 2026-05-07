@@ -35,9 +35,9 @@ def signup(user: SignupRequest):
             }
         )
         db.commit()
-    except Exception:
+    except Exception as e:
         db.rollback()
-        raise HTTPException(status_code=400, detail="User already exists")
+        raise HTTPException(status_code=400, detail=str(e))
 
     db.close()
     return {"message": "User created successfully"}
