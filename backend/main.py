@@ -36,10 +36,12 @@ logger = logging.getLogger(__name__)
 app = FastAPI(title="Appointment Reason Classifier API")
 
 FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
+# Support multiple allowed origins (comma-separated in env var)
+allowed_origins = [o.strip() for o in FRONTEND_URL.split(",") if o.strip()]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[FRONTEND_URL],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "PATCH"],
     allow_headers=["Authorization", "Content-Type"],
