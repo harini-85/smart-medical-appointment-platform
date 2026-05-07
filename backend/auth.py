@@ -18,7 +18,7 @@ def signup(user: SignupRequest):
     try:
         db.execute(
             text("""
-                INSERT INTO users (name, email, password, mobile, role, hospital_name, hospital_lat, hospital_lng, hospital_phone, hospital_address)
+                INSERT INTO users (name, email, password_hash, mobile, role, hospital_name, hospital_lat, hospital_lng, hospital_phone, hospital_address)
                 VALUES (:name, :email, :password, :mobile, :role, :hospital_name, :hospital_lat, :hospital_lng, :hospital_phone, :hospital_address)
             """),
             {
@@ -57,7 +57,7 @@ def login(credentials: LoginRequest):
     if not result:
         raise HTTPException(status_code=400, detail="Invalid email")
 
-    if not verify_password(credentials.password, result.password):
+    if not verify_password(credentials.password, result.password_hash):
         raise HTTPException(status_code=400, detail="Invalid password")
 
     token = create_access_token({
